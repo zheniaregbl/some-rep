@@ -31,6 +31,7 @@
             dataGridView1 = new DataGridView();
             label1 = new Label();
             button1 = new Button();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -66,12 +67,25 @@
             button1.TabIndex = 2;
             button1.Text = "Редактировать";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.FromArgb(103, 186, 128);
+            button2.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            button2.Location = new Point(189, 453);
+            button2.Name = "button2";
+            button2.Size = new Size(171, 45);
+            button2.TabIndex = 3;
+            button2.Text = "Добавление";
+            button2.UseVisualStyleBackColor = false;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(974, 508);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
@@ -89,5 +103,6 @@
         private DataGridView dataGridView1;
         private Label label1;
         private Button button1;
+        private Button button2;
     }
 }

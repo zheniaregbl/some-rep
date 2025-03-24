@@ -2,6 +2,7 @@ namespace exam25
 {
     public partial class MainForm : Form
     {
+        private List<Contractor> _Contractors = new List<Contractor>();
         private ContractorController _ContractorController;
 
         public MainForm()
@@ -34,9 +35,9 @@ namespace exam25
         {
             dataGridView1.Rows.Clear();
 
-            var contractors = _ContractorController.GetAllContractor();
+            _Contractors = _ContractorController.GetAllContractor();
 
-            foreach (Contractor contractor in contractors)
+            foreach (Contractor contractor in _Contractors)
             {
                 _ReadSingleRow(contractor);
             }
@@ -45,6 +46,12 @@ namespace exam25
         private void _ReadSingleRow(Contractor contractor)
         {
             dataGridView1.Rows.Add(contractor.Id, contractor.Name, contractor.Address, contractor.INN, contractor.Person, contractor.Phone, contractor.Email, contractor.Rating, contractor.Safety);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var form = new ContractorForm(null);
+            form.Show();
         }
     }
 }

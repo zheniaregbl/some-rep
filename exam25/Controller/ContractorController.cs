@@ -20,9 +20,10 @@ namespace exam25
         {
             var contractors = new List<Contractor>();
 
-            var query = "select con.id, con.name, con.address, con.inn, con.contact_person, con.phone, con.email, con.rating, round(avg(sh.quality)::numeric, 1), round((avg(sh.timeliness) / 100)::numeric, 2) from contractor con\n" +
-                "inner join service_history sh on sh.contractor = con.id\n" +
-                "group by con.id;";
+            var query = "select con.id, ct.id, ct.name, con.name, con.address, con.inn, con.contact_person, con.phone, con.email, con.rating, COALESCE(round(avg(sh.quality)::numeric, 1), 0), COALESCE(round((avg(sh.timeliness) / 100)::numeric, 2), 0) from contractor con\n" +
+                "left join service_history sh on sh.contractor = con.id\n" +
+                "left join contractor_type ct on ct.id = con.type\n" +
+                "group by con.id, ct.id, ct.name, con.name, con.address, con.inn, con.contact_person, con.phone, con.email, con.rating;";
 
             using (var command = new NpgsqlCommand(query, _dbHelper.GetConnection()))
             {
@@ -32,15 +33,18 @@ namespace exam25
                     {
                         var contractor = new Contractor(
                             id: reader.GetInt32(0),
-                            type: null,
-                            name: reader.GetString(1),
-                            address: reader.GetString(2),
-                            inn: reader.GetString(3),
-                            person: reader.GetString(4),
-                            phone: reader.GetString(5),
-                            email: reader.GetString(6),
-                            rating: reader.GetInt32(7),
-                            safety: CalculateSafety(reader.GetFloat(8), reader.GetFloat(9))
+                            type: new ContractorType(
+                                id: reader.GetInt32(1),
+                                name: reader.GetString(2)
+                            ),
+                            name: reader.GetString(3),
+                            address: reader.GetString(4),
+                            inn: reader.GetString(5),
+                            person: reader.GetString(6),
+                            phone: reader.GetString(7),
+                            email: reader.GetString(8),
+                            rating: reader.GetInt32(9),
+                            safety: CalculateSafety(reader.GetFloat(10), reader.GetFloat(11))
                         );
 
                         contractors.Add(contractor);
